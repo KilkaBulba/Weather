@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>О нас</title>
+<style>
+  body {
+    background-color: #ffffff; /* общий фон страницы */
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Заголовок */
+  header {
+    position: relative;
+    background-color: #333333; /* фон заголовка */
+    color: #ffffff;
+    padding: 100px;
+    text-align: center;
+    font-size: 60px;
+  }
+
+  header button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #666666; /* начальный цвет фона */
+    transition: transform 0.5s ease, background-color 0.5s ease;
+  }
+
+  header button:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+  }
+  
+  #buttonsContainer {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+  }
+
+  .content {
+    padding: 50px;
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .info-container {
+    border: 7px dashed #666666;
+    padding: 20px;
+    margin: 20px;
+    font-size: 18px;
+  }
+
+  .info-item {
+    margin: 10px 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  О нас
+  <div id="buttonsContainer">
+    <button id="homeBtn">Главная</button>
+    <button id="factsBtn">Интересные факты</button>
+    <button id="aboutBtn">О нас</button>
+  </div>
+</header>
+
+<div class="content">
+  <div class="info-container">
+    <div class="info-item"><strong>Автор: Кукин Андрей Константинович</strong></div>
+    <div class="info-item"><strong>Электронная почта: edwardkenwey_20@mail.ru</strong> </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('factsBtn').addEventListener('click', function() {
+    if (window.location.pathname.endsWith('facts.html')) return;
+    window.location.href = 'facts.html';
+  });
+
+  document.getElementById('homeBtn').addEventListener('click', function() {
+    window.location.href = 'index.html';
+  });
+
+  document.getElementById('aboutBtn').addEventListener('click', function() {
+    // Текущая страница
+    if (window.location.pathname.endsWith('about.html')) return;
+    window.location.href = 'about.html';
+  });
+</script>
+
+</body>
+</html>

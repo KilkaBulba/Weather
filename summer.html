@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Лето в Москве - Рекорды и интересные факты</title>
+<style>
+  body {
+    background-color: #ffffff; /* общий фон страницы */
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Заголовок */
+  header {
+    position: relative;
+    background-color: #333333; /* фон заголовка */
+    color: #ffffff;
+    padding: 100px;
+    text-align: center;
+    font-size: 60px;
+  }
+
+  header button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+	background-color: #666666; /* начальный цвет фона */
+    transition: transform 0.5s ease, background-color 0.5s ease;
+  }
+
+  header button:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+  }
+
+  #buttonsContainer {
+    display: flex;
+    gap: 10px;
+  }
+
+  /* Контейнер для текста */
+  .text-container {
+    width: calc(100% - 100px);
+    margin: 50px 50px;
+    padding: 20px;
+    border: 15px solid transparent;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    min-height: 200px;
+    border-image: linear-gradient(to right, #FF4500, gold) 1;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  Лето в Мокве - Рекорды и интересные факты
+  <div id="buttonsContainer" style="position: absolute; bottom: 10px; left: 10px;">
+    <button id="backBtn">Назад</button>
+  </div>
+</header>
+
+<div class="text-container">
+  Июль - единственный месяц в году, в котором никогда не было зафиксировано отрицательных температур<br>
+  <br>
+  Абсолютный максимум температуры был зафиксирован 29 июля 2010 года и составил +38,2 градуса. Предыдущий рекорд был зафиксирован в 1972 году - +35,7 градусов.
+  Примечательно, что в обоих случаях в Московской области из-за жары загорались торфяники, из-за чего Москва покрывалась густым смогом.<br>
+  <br>
+  Самая низкая температура летом была зафиксирована 1 июня 1916 года и составила -2,3 градуса.<br>
+  <br>
+  Самое долгое метеорологическое лето (когда температура устойчиво больше 15 градусов) было в 2024 году - 136 дней. Самое короткое лето было в 2003 году - 55 дней.<br>
+  <br>
+  Летом в Москве крайне редко, но все же случаются шквалы. Самые сильные были зафиксированы в 1998 и 2017 годах.
+  Однако самым разрушительным был смерч в 1904 году - по оценкам, скорость ветра тогда достигала 60 км/ч.
+</div>
+
+<script>
+  document.getElementById('backBtn').addEventListener('click', function() {
+    window.location.href = 'facts.html';
+  });
+</script>
+
+</body>
+</html>

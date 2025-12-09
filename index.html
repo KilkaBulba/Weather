@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Погода в Москве на месяц</title>
+<style>
+  body {
+    background-color: #ffffff; /* общий фон страницы */
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Заголовок */
+  header {
+    position: relative;
+    background-color: #333333; /* фон заголовка */
+    color: #ffffff;
+    padding: 100px;
+    text-align: center;
+    font-size: 60px;
+  }
+  
+  header button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+	  background-color: #666666; /* начальный цвет фона */
+    transition: transform 0.5s ease, background-color 0.5s ease;
+  }
+  
+  header button:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+}
+  
+  #buttonsContainer {
+    display: flex;
+    gap: 10px;
+  }
+
+  /* Контейнер календаря */
+  .calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px;
+    padding: 50px;
+  }
+
+  /* Ячейки календаря */
+  .day {
+    background-color: #ffffff; /* фон ячеек */
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #003366;
+    box-sizing: border-box;
+    padding: 5px;
+    font-size: 16px;
+    text-align: center;
+	transition: transform 0.5s ease;
+  }
+  
+  .day:hover {
+    transform: scale(1.1);
+  }
+ 
+  .day a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Ячейка текущего дня */
+  .day.current {
+    border: 4px solid orange;
+  }
+  
+  .day.clear {
+    background: linear-gradient(to right, gold, #FFFFE0);
+  }
+  .day.cloudy {
+    background: linear-gradient(to bottom, #708090, #FFFFE0);
+  }
+  .day.rain {
+    background: linear-gradient(to bottom, #708090, #CCCCCC);
+  }
+  .day.snow {
+    background: linear-gradient(to bottom, #CCCCCC, #FFFFFF);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  Погода в Москве на месяц
+  <div id="buttonsContainer" style="position: absolute; bottom: 10px; left: 10px;">
+    <button id="homeBtn">Главная</button>
+    <button id="factsBtn">Интересные факты</button>
+    <button id="aboutBtn">О нас</button>
+  </div>
+</header>
+
+<div class="calendar" id="calendar">
+  <!-- Ячейки с датами заполнятся скриптом -->
+</div>
+
+<script>
+  const weatherData = [
+    {
+      date: "09-12-2025",
+      condition: "Пасмурно",
+      tempMax: 1,
+      tempMin: 0
+    },
+    {
+      date: "10-12-2025",
+      condition: "Пасмурно",
+      tempMax: 2,
+      tempMin: -1
+    },
+    {
+      date: "11-12-2025",
+      condition: "Дождь",
+      tempMax: 5,
+      tempMin: 2
+    },
+    {
+      date: "12-12-2025",
+      condition: "Снег с дождем",
+      tempMax: 5,
+      tempMin: -4
+    },
+    {
+      date: "13-12-2025",
+      condition: "Ясно",
+      tempMax: -5,
+      tempMin: -6
+    },
+    {
+      date: "14-12-2025",
+      condition: "Ясно",
+      tempMax: -6,
+      tempMin: -7
+    },
+    {
+      date: "15-12-2025",
+      condition: "Ясно",
+      tempMax: -7,
+      tempMin: -10
+    },
+    {
+      date: "16-12-2025",
+      condition: "Солнечно",
+      tempMax: -8,
+      tempMin: -11
+    },
+    {
+      date: "17-12-2025",
+      condition: "Солнечно",
+      tempMax: -8,
+      tempMin: -11
+    },
+    {
+      date: "18-12-2025",
+      condition: "Снег",
+      tempMax: -4,
+      tempMin: -9
+    },
+    {
+      date: "19-12-2025",
+      condition: "Снег",
+      tempMax: 1,
+      tempMin: 0
+    },
+    {
+      date: "20-12-2025",
+      condition: "Снег",
+      tempMax: 0,
+      tempMin: -1
+    },
+    {
+      date: "21-12-2025",
+      condition: "Снег",
+      tempMax: 1,
+      tempMin: -5
+    },
+    {
+      date: "22-12-2025",
+      condition: "Снег с дождем",
+      tempMax: -3,
+      tempMin: -4
+    },
+    {
+      date: "23-12-2025",
+      condition: "Облачно",
+      tempMax: -2,
+      tempMin: -4
+    },
+    {
+      date: "24-12-2025",
+      condition: "Облачно",
+      tempMax: -2,
+      tempMin: -4
+    },
+    {
+      date: "25-12-2025",
+      condition: "Облачно",
+      tempMax: -4,
+      tempMin: -5
+    },
+    {
+      date: "26-12-2025",
+      condition: "Снег с дождем",
+      tempMax: -3,
+      tempMin: -5
+    },
+    {
+      date: "27-12-2025",
+      condition: "Снег с дождем",
+      tempMax: -4,
+      tempMin: -7
+    },
+    {
+      date: "28-12-2025",
+      condition: "Пасмурно",
+      tempMax: -7,
+      tempMin: -8
+    },
+    {
+      date: "29-12-2025",
+      condition: "Пасмурно",
+      tempMax: -7,
+      tempMin: -8
+    },
+    {
+      date: "30-12-2025",
+      condition: "Ясно",
+      tempMax: -7,
+      tempMin: -8
+    },
+    {
+      date: "31-12-2025",
+      condition: "Ясно",
+      tempMax: -5,
+      tempMin: -8
+    },
+    {
+      date: "01-01-2026",
+      condition: "Ясно",
+      tempMax: -6,
+      tempMin: -9
+    },
+    {
+      date: "02-01-2026",
+      condition: "Ясно",
+      tempMax: -7,
+      tempMin: -8
+    },
+    {
+      date: "03-01-2026",
+      condition: "Облачно",
+      tempMax: -6,
+      tempMin: -8
+    },
+    {
+      date: "04-01-2026",
+      condition: "Облачно",
+      tempMax: -6,
+      tempMin: -7
+    },
+    {
+      date: "05-01-2026",
+      condition: "Снег с дождем",
+      tempMax: -6,
+      tempMin: -8
+    },
+  ];
+  
+  const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+  const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+  
+  const today = new Date();
+
+
+  // Функция отображения недели с понедельника
+  function getCorrectDayName(date) {
+    const jsDay = date.getDay();
+    const correctedIndex = (jsDay + 6) % 7;
+    return daysOfWeek[correctedIndex];
+  }
+
+  // Функция форматирования даты
+  function formatDate(date) {
+    const dayName = getCorrectDayName(date);
+    const dayNumber = date.getDate();
+    const monthName = months[date.getMonth()];
+    return `${dayName}, ${dayNumber} ${monthName}`;
+  }
+
+  // Функция для парсинга даты в формате ДД-ММ-ГГГГ
+  function parseDateDMY(dateStr) {
+    const parts = dateStr.split('-');
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const year = parseInt(parts[2], 10);
+    return new Date(year, month, day);
+  }
+
+  const totalCells = 28;
+  const calendarDiv = document.getElementById('calendar');
+
+for (let i = 0; i < totalCells; i++) {
+  const dateIndex = i + 1;
+  const futureDate = new Date(today);
+  futureDate.setDate(today.getDate() + i);
+
+  // Формат даты дд-мм-гггг
+  const dayStr = futureDate.getDate().toString().padStart(2, '0');
+  const monthStr = (futureDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = futureDate.getFullYear();
+  const paramDate = `${dayStr}-${monthStr}-${year}`;
+
+  const dateText = formatDate(futureDate);
+
+  const link = document.createElement('a');
+  link.href = `day.html?day=${dateIndex}&date=${paramDate}`;
+  link.textContent = dateText;
+
+  const cellDiv = document.createElement('div');
+  cellDiv.className = 'day';
+
+  if (i === 0) {
+    cellDiv.classList.add('current');
+  }
+  
+  // Проверка совпадения даты с weatherData
+  const weatherForDate = weatherData.find(w => {
+    const dataDate = parseDateDMY(w.date);
+    return w.date === paramDate;
+  });
+  if (weatherForDate) {
+    const weatherString = `${weatherForDate.condition}, ${weatherForDate.tempMin}° / ${weatherForDate.tempMax}°`;
+    const weatherSpan = document.createElement('div');
+    weatherSpan.style.fontSize = '12px';
+    weatherSpan.textContent = weatherString;
+    link.appendChild(weatherSpan);
+
+    const condition = weatherForDate.condition.toLowerCase();
+
+    if (condition.includes('ясно') || condition.includes('солнечно')) {
+      cellDiv.classList.add('clear');
+    } else if (condition.includes('облачно') || condition.includes('пасмурно')) {
+      cellDiv.classList.add('cloudy');
+    } else if (condition.includes('дождь') || condition.includes('снег с дождем') || condition.includes('гроза')) {
+      cellDiv.classList.add('rain');
+    } else if (condition.includes('снег')) {
+      cellDiv.classList.add('snow');
+    }
+  }
+  cellDiv.appendChild(link);
+  calendarDiv.appendChild(cellDiv);
+}
+
+  document.getElementById('homeBtn').addEventListener('click', function() {
+    // Текущая страница
+    if (window.location.pathname.endsWith('index.html')) return;
+    window.location.href = 'index.html';
+  });
+
+  document.getElementById('factsBtn').addEventListener('click', function() {
+  window.location.href = 'facts.html';
+});
+
+  document.getElementById('aboutBtn').addEventListener('click', function() {
+  window.location.href = 'about.html';
+});
+
+</script>
+
+</body>
+</html>

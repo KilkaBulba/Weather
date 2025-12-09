@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Рекорды и интересные факты</title>
+<style>
+  body {
+    background-color: #ffffff; /* общий фон страницы */
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Заголовок */
+  header {
+    position: relative;
+    background-color: #333333; /* фон заголовка */
+    color: #ffffff;
+    padding: 100px;
+    text-align: center;
+    font-size: 60px;
+  }
+
+  header button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+	background-color: #666666; /* начальный цвет фона */
+    transition: transform 0.5s ease, background-color 0.5s ease;
+  }
+
+  header button:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+  }
+  
+  #buttonsContainer {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+  }
+
+  .facts-container {
+    width: calc(100% - 100px);
+    margin: 50px 50px;
+    padding: 20px;
+    border: 3px solid black;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 20px;
+  }
+
+  .season-box {
+    flex: 1;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    min-height: 150px;
+    transition: transform 0.5s ease;
+  }
+
+  .summer {
+    border: 4px solid #FF4500;
+  }
+
+  .winter {
+    border: 4px solid #00BFFF;
+  }
+
+  .season-label {
+    font-weight: bold;
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .season-text {
+    width: 100%;
+    height: calc(100% - 30px);
+    outline: none;
+    resize: none;
+    border: none;
+    font-size: 14px;
+    background: transparent;
+  }
+
+  .season-text:focus {
+    outline: 2px solid #777;
+  }
+
+  .season-box:hover {
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  Рекорды и интересные факты
+  <div id="buttonsContainer">
+    <button id="homeBtn">Главная</button>
+    <button id="factsBtn">Интересные факты</button>
+    <button id="aboutBtn">О нас</button>
+  </div>
+</header>
+
+<div class="facts-container">
+  <!-- Первый блок: Лето -->
+  <div class="season-box summer" onclick="window.location.href='summer.html'">
+    <div class="season-label">Лето</div>
+  </div>
+  
+  <!-- Второй блок: Зима -->
+  <div class="season-box winter" onclick="window.location.href='winter.html'">
+    <div class="season-label">Зима</div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('factsBtn').addEventListener('click', function() {
+    // Текущая страница
+    if (window.location.pathname.endsWith('facts.html')) return;
+    window.location.href = 'facts.html';
+  });
+
+  document.getElementById('homeBtn').addEventListener('click', function() {
+    window.location.href = 'index.html';
+  });
+
+  document.getElementById('aboutBtn').addEventListener('click', function() {
+    window.location.href = 'about.html';
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Погода на</title>
+<style>
+  body {
+    background-color: #ffffff;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Заголовок */
+  header {
+    position: relative;
+    background-color: #333333; /* фон заголовка */
+    color: #ffffff;
+    padding: 100px;
+    text-align: center;
+    font-size: 60px;
+  }
+
+  header button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+	  background-color: #666666; /* начальный цвет фона */
+    transition: transform 0.5s ease, background-color 0.5s ease;
+  }
+  
+  header button:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+}
+  
+  #buttonsContainer {
+    display: flex;
+    gap: 10px;
+  }
+
+  #weatherContainer {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 20px;
+    border: 3px solid black;
+    background-color: #d3d3d3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  #weatherContainer p {
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .category {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+<header id="header">
+  <span id="headerText">Погода на</span>
+  <div id="buttonsContainer" style="position: absolute; bottom: 10px; left: 10px;">
+  <button id="homeBtn">На главную</button>
+  </div>
+</header>
+
+<div id="content"></div> <!-- контейнер для динамического контента -->
+<div id="weatherContainer" style="display:none;"></div>
+
+<script>
+const weatherData = [
+  {
+    date: "09-12-2025",
+    condition: "Пасмурно",
+    tempMax: 1,
+    tempMin: 0,
+    humidityMax: 89,
+    humidityMin: 79,
+    pressureMax: 753,
+    pressureMin: 747,
+    windSpeed: 4,
+    windDirection: "Юг",
+    sunrise: "08:46",
+    sunset: "15:57"
+  },
+  {
+    date: "10-12-2025",
+    condition: "Пасмурно",
+    tempMax: 2,
+    tempMin: -1,
+    humidityMax: 91,
+    humidityMin: 86,
+    pressureMax: 748,
+    pressureMin: 746,
+    windSpeed: 2,
+    windDirection: "Юг",
+    sunrise: "08:47",
+    sunset: "15:56"
+  },
+  {
+    date: "11-12-2025",
+    condition: "Дождь",
+    tempMax: 5,
+    tempMin: 2,
+    humidityMax: 94,
+    humidityMin: 91,
+    pressureMax: 744,
+    pressureMin: 739,
+    windSpeed: 3,
+    windDirection: "Юго-запад",
+    sunrise: "08:48",
+    sunset: "15:56"
+  },
+  {
+    date: "12-12-2025",
+    condition: "Снег с дождем",
+    tempMax: 5,
+    tempMin: -4,
+    humidityMax: 92,
+    humidityMin: 85,
+    pressureMax: 742,
+    pressureMin: 737,
+    windSpeed: 5,
+    windDirection: "Запад",
+    sunrise: "08:49",
+    sunset: "15:56"
+  },
+  {
+    date: "13-12-2025",
+    condition: "Ясно",
+    tempMax: -5,
+    tempMin: -6,
+    humidityMax: 81,
+    humidityMin: 75,
+    pressureMax: 748,
+    pressureMin: 745,
+    windSpeed: 6,
+    windDirection: "Северо-запад",
+    sunrise: "08:51",
+    sunset: "15:56"
+  },
+  {
+    date: "14-12-2025",
+    condition: "Ясно",
+    tempMax: -6,
+    tempMin: -7,
+    humidityMax: 86,
+    humidityMin: 74,
+    pressureMax: 750,
+    pressureMin: 747,
+    windSpeed: 4,
+    windDirection: "Северо-запад",
+    sunrise: "08:52",
+    sunset: "15:56"
+  },
+  {
+    date: "15-12-2025",
+    condition: "Ясно",
+    tempMax: -7,
+    tempMin: -10,
+    humidityMax: 87,
+    humidityMin: 74,
+    pressureMax: 753,
+    pressureMin: 751,
+    windSpeed: 3,
+    windDirection: "Северо-запад",
+    sunrise: "08:53",
+    sunset: "15:56"
+  },
+  {
+    date: "16-12-2025",
+    condition: "Солнечно",
+    tempMax: -8,
+    tempMin: -11,
+    humidityMax: 88,
+    humidityMin: 77,
+    pressureMax: 756,
+    pressureMin: 754,
+    windSpeed: 3,
+    windDirection: "Северо-запад",
+    sunrise: "08:53",
+    sunset: "15:56"
+  },
+  {
+    date: "17-12-2025",
+    condition: "Солнечно",
+    tempMax: -8,
+    tempMin: -11,
+    humidityMax: 89,
+    humidityMin: 81,
+    pressureMax: 756,
+    pressureMin: 755,
+    windSpeed: 3,
+    windDirection: "Юго-запад",
+    sunrise: "08:54",
+    sunset: "15:56"
+  },
+  {
+    date: "18-12-2025",
+    condition: "Снег",
+    tempMax: -4,
+    tempMin: -9,
+    humidityMax: 90,
+    humidityMin: 83,
+    pressureMax: 755,
+    pressureMin: 751,
+    windSpeed: 2,
+    windDirection: "Юг",
+    sunrise: "08:55",
+    sunset: "15:56"
+  },
+  {
+    date: "19-12-2025",
+    condition: "Снег",
+    tempMax: 1,
+    tempMin: 0,
+    humidityMax: 92,
+    humidityMin: 86,
+    pressureMax: 752,
+    pressureMin: 750,
+    windSpeed: 3,
+    windDirection: "Юго-запад",
+    sunrise: "08:56",
+    sunset: "15:56"
+  },
+  {
+    date: "20-12-2025",
+    condition: "Снег",
+    tempMax: 0,
+    tempMin: -1,
+    humidityMax: 92,
+    humidityMin: 89,
+    pressureMax: 749,
+    pressureMin: 748,
+    windSpeed: 4,
+    windDirection: "Юго-запад",
+    sunrise: "08:56",
+    sunset: "15:57"
+  },
+  {
+    date: "21-12-2025",
+    condition: "Снег",
+    tempMax: 1,
+    tempMin: -5,
+    humidityMax: 92,
+    humidityMin: 82,
+    pressureMax: 756,
+    pressureMin: 747,
+    windSpeed: 5,
+    windDirection: "Юго-запад",
+    sunrise: "08:57",
+    sunset: "15:57"
+  },
+  {
+    date: "22-12-2025",
+    condition: "Снег с дождем",
+    tempMax: -3,
+    tempMin: -4,
+    humidityMax: 90,
+    humidityMin: 81,
+    pressureMax: 755,
+    pressureMin: 749,
+    windSpeed: 5,
+    windDirection: "Северо-запад",
+    sunrise: "08:57",
+    sunset: "15:57"
+  },
+  {
+    date: "23-12-2025",
+    condition: "Облачно",
+    tempMax: -2,
+    tempMin: -4,
+    humidityMax: 89,
+    humidityMin: 85,
+    pressureMax: 746,
+    pressureMin: 736,
+    windSpeed: 6,
+    windDirection: "Запад",
+    sunrise: "08:58",
+    sunset: "15:58"
+  },
+  {
+    date: "24-12-2025",
+    condition: "Облачно",
+    tempMax: -2,
+    tempMin: -4,
+    humidityMax: 89,
+    humidityMin: 84,
+    pressureMax: 733,
+    pressureMin: 719,
+    windSpeed: 7,
+    windDirection: "Запад",
+    sunrise: "08:58",
+    sunset: "15:59"
+  },
+  {
+    date: "25-12-2025",
+    condition: "Облачно",
+    tempMax: -4,
+    tempMin: -5,
+    humidityMax: 88,
+    humidityMin: 85,
+    pressureMax: 732,
+    pressureMin: 717,
+    windSpeed: 7,
+    windDirection: "Юго-запад",
+    sunrise: "08:59",
+    sunset: "15:59"
+  },
+  {
+    date: "26-12-2025",
+    condition: "Снег с дождем",
+    tempMax: -3,
+    tempMin: -5,
+    humidityMax: 95,
+    humidityMin: 86,
+    pressureMax: 745,
+    pressureMin: 735,
+    windSpeed: 5,
+    windDirection: "Юго-запад",
+    sunrise: "08:59",
+    sunset: "16:00"
+  },
+  {
+    date: "27-12-2025",
+    condition: "Снег с дождем",
+    tempMax: -4,
+    tempMin: -7,
+    humidityMax: 98,
+    humidityMin: 96,
+    pressureMax: 738,
+    pressureMin: 715,
+    windSpeed: 3,
+    windDirection: "Юг",
+    sunrise: "08:59",
+    sunset: "16:01"
+  },
+  {
+    date: "28-12-2025",
+    condition: "Пасмурно",
+    tempMax: -7,
+    tempMin: -8,
+    humidityMax: 95,
+    humidityMin: 93,
+    pressureMax: 736,
+    pressureMin: 725,
+    windSpeed: 4,
+    windDirection: "Север",
+    sunrise: "08:59",
+    sunset: "16:02"
+  },
+  {
+    date: "29-12-2025",
+    condition: "Пасмурно",
+    tempMax: -7,
+    tempMin: -8,
+    humidityMax: 92,
+    humidityMin: 89,
+    pressureMax: 730,
+    pressureMin: 720,
+    windSpeed: 4,
+    windDirection: "Север",
+    sunrise: "08:59",
+    sunset: "16:03"
+  },
+  {
+    date: "30-12-2025",
+    condition: "Ясно",
+    tempMax: -7,
+    tempMin: -8,
+    humidityMax: 89,
+    humidityMin: 86,
+    pressureMax: 739,
+    pressureMin: 733,
+    windSpeed: 1,
+    windDirection: "Север",
+    sunrise: "08:59",
+    sunset: "16:04"
+  },
+  {
+    date: "31-12-2025",
+    condition: "Ясно",
+    tempMax: -5,
+    tempMin: -8,
+    humidityMax: 89,
+    humidityMin: 85,
+    pressureMax: 746,
+    pressureMin: 740,
+    windSpeed: 2,
+    windDirection: "Юг",
+    sunrise: "08:59",
+    sunset: "16:05"
+  },
+  {
+    date: "01-01-2026",
+    condition: "Ясно",
+    tempMax: -6,
+    tempMin: -9,
+    humidityMax: 87,
+    humidityMin: 83,
+    pressureMax: 754,
+    pressureMin: 748,
+    windSpeed: 2,
+    windDirection: "Юг",
+    sunrise: "08:59",
+    sunset: "16:06"
+  },
+  {
+    date: "02-01-2026",
+    condition: "Ясно",
+    tempMax: -7,
+    tempMin: -8,
+    humidityMax: 92,
+    humidityMin: 87,
+    pressureMax: 756,
+    pressureMin: 752,
+    windSpeed: 4,
+    windDirection: "Юго-восток",
+    sunrise: "08:58",
+    sunset: "16:07"
+  },
+  {
+    date: "03-01-2026",
+    condition: "Облачно",
+    tempMax: -6,
+    tempMin: -8,
+    humidityMax: 97,
+    humidityMin: 94,
+    pressureMax: 756,
+    pressureMin: 751,
+    windSpeed: 5,
+    windDirection: "Юго-восток",
+    sunrise: "08:58",
+    sunset: "16:08"
+  },
+  {
+    date: "04-01-2026",
+    condition: "Облачно",
+    tempMax: -6,
+    tempMin: -7,
+    humidityMax: 98,
+    humidityMin: 97,
+    pressureMax: 757,
+    pressureMin: 751,
+    windSpeed: 3,
+    windDirection: "Юг",
+    sunrise: "08:58",
+    sunset: "16:10"
+  },
+  {
+    date: "05-01-2026",
+    condition: "Снег с дождем",
+    tempMax: -6,
+    tempMin: -8,
+    humidityMax: 99,
+    humidityMin: 96,
+    pressureMax: 751,
+    pressureMin: 749,
+    windSpeed: 6,
+    windDirection: "Юго-восток",
+    sunrise: "08:55",
+    sunset: "15:56"
+  },
+];
+
+function getQueryParam(param) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(param);
+}
+
+const dateParam = getQueryParam('date');
+
+const headerTextEl = document.getElementById('headerText');
+const contentDiv = document.getElementById('content');
+
+if (dateParam) {
+  const dateParts = dateParam.split('-');
+  const year = parseInt(dateParts[2], 10);
+  const month = parseInt(dateParts[1], 10) - 1;
+  const day = parseInt(dateParts[0], 10);
+  const dateObj = new Date(year, month, day);
+
+  const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+  const getCorrectDayName = (date) => {
+    const jsDay = date.getDay();
+    const correctedIndex = (jsDay + 6) % 7;
+    return daysOfWeek[correctedIndex];
+  };
+
+  const dayName = getCorrectDayName(dateObj);
+  const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+  const dateDisplay = `${dayName}, ${dateObj.getDate()} ${months[dateObj.getMonth()]}`;
+
+  headerTextEl.textContent = `Погода на ${dateDisplay}`;
+  document.title = `Погода на ${dateDisplay}`;
+} else {
+  headerTextEl.textContent = 'Погода на конец света';
+  document.title = 'Погода на конец света';
+}
+
+// Поиск данных по дате
+const weatherForDate = weatherData.find(w => w.date === dateParam);
+
+let weatherHTML = '';
+
+if (weatherForDate) {
+  weatherContainer.style.display = 'flex';
+  const createParagraph = (label, value, underline = false) => {
+    return `<p><span class="category" style="${underline ? 'text-decoration:underline;' : ''}">${label}</span>: ${value}</p>`;
+  };
+  
+  let htmlContent = '';
+  htmlContent += createParagraph('Погода', weatherForDate.condition);
+  htmlContent += createParagraph('Температура', `${weatherForDate.tempMin}° / ${weatherForDate.tempMax}°`);
+  htmlContent += createParagraph('Влажность', `${weatherForDate.humidityMin} / ${weatherForDate.humidityMax} %`);
+  htmlContent += createParagraph('Давление', `${weatherForDate.pressureMin} / ${weatherForDate.pressureMax} мм.рт.ст`);
+  htmlContent += createParagraph('Ветер', `${weatherForDate.windSpeed} км/ч`);
+  htmlContent += createParagraph('Направление ветра', `${weatherForDate.windDirection}`);
+  htmlContent += createParagraph('Восход', weatherForDate.sunrise);
+  htmlContent += createParagraph('Закат', weatherForDate.sunset);
+
+  document.getElementById('weatherContainer').innerHTML = htmlContent;
+} else {
+  document.getElementById('weatherContainer').style.display = 'flex';
+
+  const noDataHTML = `<p>Данных о погоде на выбранную дату нет</p>`;
+  document.getElementById('weatherContainer').innerHTML = noDataHTML;
+  contentDiv.innerHTML = '';
+}
+
+contentDiv.innerHTML = weatherHTML;
+
+// Обработчик кнопки "На главную"
+document.getElementById('homeBtn').addEventListener('click', function() {
+  window.location.href = 'index.html';
+});
+</script>
+</body>
+</html>
